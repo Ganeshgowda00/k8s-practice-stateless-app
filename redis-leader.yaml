@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-leader
+  labels:
+    app: redis
+    role: head
+    tier: backend
+spec:
+  replica: 1
+  selector:
+    matchLabels:
+      app: redis
+      
+  template:
+    metadata:
+      matchLabels:
+        app: redis
+        role: head
+        tier: backend
+    spec:
+      containers:
+      - name: redis-leader
+        image: "docker.io/redis:6.0.5"
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 6379
